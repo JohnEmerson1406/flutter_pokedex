@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_pokedex/consts/consts_app.dart';
 import 'package:flutter_pokedex/models/pokeapi.dart';
 import 'package:flutter_pokedex/stores/pokeapi_store.dart';
 import 'package:get_it/get_it.dart';
@@ -80,7 +81,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
           ),
           SlidingSheet(
             elevation: 0, // sombra
-            cornerRadius: 16,
+            cornerRadius: 30,
             snapSpec: const SnapSpec(
               snap: true,
               snappings: [0.7, 1.0],
@@ -94,7 +95,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
           ),
           Padding(
             child: SizedBox(
-              height: 150,
+              height: 200,
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (index) {
@@ -103,20 +104,36 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                 itemCount: _pokemonStore.pokeAPI.pokemon.length,
                 itemBuilder: (BuildContext context, int index) {
                   Pokemon _pokeItem = _pokemonStore.getPokemon(index: index);
-                  return CachedNetworkImage(
-                    height: 60,
-                    width: 60,
-                    placeholder: (context, url) => new Container(
-                      color: Colors
-                          .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
-                    ),
-                    imageUrl:
-                        'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png',
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Hero(
+                        child: Opacity(
+                          child: Image.asset(
+                            ConstsApp.whitePokeball,
+                            height: 270,
+                            width: 270,
+                          ),
+                          opacity: 0.2,
+                        ),
+                        tag: index.toString(),
+                      ),
+                      CachedNetworkImage(
+                        height: 160,
+                        width: 160,
+                        placeholder: (context, url) => new Container(
+                          color: Colors
+                              .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
+                        ),
+                        imageUrl:
+                            'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png',
+                      ),
+                    ],
                   );
                 },
               ),
             ),
-            padding: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.only(top: 60),
           ),
         ],
       ),
