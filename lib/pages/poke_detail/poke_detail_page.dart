@@ -5,6 +5,8 @@ import 'package:flutter_pokedex/consts/consts_app.dart';
 import 'package:flutter_pokedex/models/pokeapi.dart';
 import 'package:flutter_pokedex/stores/pokeapi_store.dart';
 import 'package:get_it/get_it.dart';
+import 'package:simple_animations/simple_animations/controlled_animation.dart';
+import 'package:simple_animations/simple_animations/multi_track_tween.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class PokeDetailPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
   PageController _pageController;
   Pokemon _pokemon;
   PokeApiStore _pokemonStore;
+  MultiTrackTween _animation;
 
   @override
   void initState() {
@@ -26,6 +29,10 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
     _pageController = PageController(initialPage: widget.index);
     _pokemonStore = GetIt.instance<PokeApiStore>();
     _pokemon = _pokemonStore.pokemonAtual;
+    _animation = MultiTrackTween([
+      Track("rotation").add(Duration(seconds: 5), Tween(begin: 0.0, end: 6.0),
+          curve: Curves.linear)
+    ]);
   }
 
   @override
@@ -107,27 +114,45 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                   return Stack(
                     alignment: Alignment.center,
                     children: <Widget>[
-                      Hero(
-                        child: Opacity(
-                          child: Image.asset(
-                            ConstsApp.whitePokeball,
-                            height: 270,
-                            width: 270,
+                      ControlledAnimation(
+                          playback: Playback.LOOP,
+                          duration: _animation.duration,
+                          tween: _animation,
+                          builder: (context, animation) {
+                            return Transform.rotate(
+                              child: Hero(
+                                child: Opacity(
+                                  child: Image.asset(
+                                    ConstsApp.whitePokeball,
+                                    height: 270,
+                                    width: 270,
+                                  ),
+                                  opacity: 0.2,
+                                ),
+                                tag: index.toString(),
+                              ),
+                              angle: animation['rotation'],
+                            );
+                          }),
+                      Observer(builder: (context) {
+                        return AnimatedPadding(
+                          child: CachedNetworkImage(
+                            height: 160,
+                            width: 160,
+                            placeholder: (context, url) => new Container(
+                              color: Colors
+                                  .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
+                            ),
+                            color: index == _pokemonStore.posicaoAtual ? null : Colors.black.withOpacity(0.5),
+                            imageUrl:
+                                'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png',
                           ),
-                          opacity: 0.2,
-                        ),
-                        tag: index.toString(),
-                      ),
-                      CachedNetworkImage(
-                        height: 160,
-                        width: 160,
-                        placeholder: (context, url) => new Container(
-                          color: Colors
-                              .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
-                        ),
-                        imageUrl:
-                            'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png',
-                      ),
+                          duration: Duration(milliseconds: 400),
+                          curve: Curves.bounceInOut,
+                          padding: EdgeInsets.all(
+                              index == _pokemonStore.posicaoAtual ? 0 : 60),
+                        );
+                      }),
                     ],
                   );
                 },
