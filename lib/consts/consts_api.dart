@@ -7,52 +7,52 @@ class ConstsAPI {
   static Color getColorType({String type}) {
     switch (type) {
       case 'Normal':
-        return Colors.brown[400];
+        return Color(4291151301); //Colors.brown[400]; Android (android.graphics.Color)
         break;
       case 'Fire':
-        return Colors.red[400];
+        return Color(4294408299); //ou 0xFFF7786B
         break;
       case 'Water':
-        return Colors.blue;
+        return Color(4286039294);
         break;
       case 'Grass':
-        return Colors.green[400];
+        return Color(4283416998); //ou 0xFF4FC1A6
         break;
       case 'Electric':
-        return Colors.amber;
+        return Color(4294954571); //Colors.amber;
         break;
       case 'Ice':
-        return Colors.cyanAccent[400];
+        return Color(4288995062);
         break;
       case 'Fighting':
-        return Colors.orange;
+        return Color(4288848539); //Colors.orange;
         break;
       case 'Poison':
-        return Colors.purple[400];
+        return Color(4286337932); //Colors.purple[400];
         break;
       case 'Ground':
-        return Colors.orange[300];
+        return Color(4290671687);
         break;
       case 'Flying':
-        return Colors.indigo[200];
+        return Color(4291677670);
         break;
       case 'Psychic':
-        return Colors.pink;
+        return Color(4282406019);
         break;
       case 'Bug':
-        return Colors.lightGreen[400];
+        return Color(4287815528);
         break;
       case 'Rock':
-        return Colors.grey;
+        return Color(4289819500);
         break;
       case 'Ghost':
-        return Colors.indigo[400];
+        return Color(4287919028);
         break;
       case 'Dark':
-        return Colors.brown;
+        return Color(4283848297);
         break;
       case 'Dragon':
-        return Colors.indigo[800];
+        return Color(4294422362);
         break;
       case 'Steel':
         return Colors.blueGrey;
@@ -61,7 +61,7 @@ class ConstsAPI {
         return Colors.pinkAccent[100];
         break;
       default:
-        return Colors.grey;
+        return Color(0x64303943);
         break;
     }
   }
