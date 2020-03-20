@@ -129,23 +129,28 @@ class _PokeDetailPageState extends State<PokeDetailPage> {
                                   ),
                                   opacity: 0.2,
                                 ),
-                                tag: index.toString(),
+                                tag: _pokeItem.name + 'rotation',
                               ),
                               angle: animation['rotation'],
                             );
                           }),
                       Observer(builder: (context) {
                         return AnimatedPadding(
-                          child: CachedNetworkImage(
-                            height: 160,
-                            width: 160,
-                            placeholder: (context, url) => new Container(
-                              color: Colors
-                                  .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
+                          child: Hero(
+                            tag: _pokeItem.name,
+                            child: CachedNetworkImage(
+                              height: 160,
+                              width: 160,
+                              placeholder: (context, url) => new Container(
+                                color: Colors
+                                    .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
+                              ),
+                              color: index == _pokemonStore.posicaoAtual
+                                  ? null
+                                  : Colors.black.withOpacity(0.5),
+                              imageUrl:
+                                  'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png',
                             ),
-                            color: index == _pokemonStore.posicaoAtual ? null : Colors.black.withOpacity(0.5),
-                            imageUrl:
-                                'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/${_pokeItem.num}.png',
                           ),
                           duration: Duration(milliseconds: 400),
                           curve: Curves.bounceInOut,

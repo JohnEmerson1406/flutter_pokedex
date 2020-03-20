@@ -59,6 +59,20 @@ class PokeItem extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: Stack(
             children: <Widget>[
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Hero(
+                  child: Opacity(
+                    child: Image.asset(
+                      ConstsApp.whitePokeball,
+                      height: 80,
+                      width: 80,
+                    ),
+                    opacity: 0.2,
+                  ),
+                  tag: name + 'rotation',
+                ),
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -82,28 +96,18 @@ class PokeItem extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Hero(
-                  child: Opacity(
-                    child: Image.asset(
-                      ConstsApp.whitePokeball,
-                      height: 80,
-                      width: 80,
+                  tag: name,
+                  child: CachedNetworkImage(
+                    alignment: Alignment.bottomRight,
+                    height: 80,
+                    width: 80,
+                    placeholder: (context, url) => new Container(
+                      color: Colors
+                          .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
                     ),
-                    opacity: 0.2,
+                    imageUrl:
+                        'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$num.png',
                   ),
-                  tag: index.toString(),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: CachedNetworkImage(
-                  height: 80,
-                  width: 80,
-                  placeholder: (context, url) => new Container(
-                    color: Colors
-                        .transparent, // o que aparece no lugar da imagem quando ela está sendo carregada.
-                  ),
-                  imageUrl:
-                      'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$num.png',
                 ),
               ),
             ],
